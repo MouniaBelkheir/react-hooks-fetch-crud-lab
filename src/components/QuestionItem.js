@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
-function QuestionItem({ question, onDeleteQuestion }) {
+function QuestionItem({ question, onDeleteQuestion, onUpdateCorrectAnswer }) {
   const { id, prompt, answers, correctIndex } = question;
+  const [selectedAnswer, setSelectedAnswer] = useState(correctIndex);
+
+  function handleSelectAnswer(event) {
+    const newCorrectIndex = parseInt(event.target.value, 10);
+    setSelectedAnswer(newCorrectIndex);
+    onUpdateCorrectAnswer(id, newCorrectIndex);
+  }
 
   return (
     <li>
@@ -11,8 +18,8 @@ function QuestionItem({ question, onDeleteQuestion }) {
         Correct Answer:
         <select
           name="correctIndex"
-          value={correctIndex}
-          readOnly
+          value={selectedAnswer}
+          onChange={handleSelectAnswer}
         >
           {answers.map((answer, index) => (
             <option key={index} value={index}>
